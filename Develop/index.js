@@ -1,6 +1,6 @@
 // TODO: Include packages needed for this application
-const inquirer = require("inquirer");
-const fs = require("fs");
+const inquirer = require('inquirer');
+const fs = require('fs');
 // TODO: Create an array of questions for user input
 const questions = [
 
@@ -49,10 +49,33 @@ const questions = [
 ];
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+    fs.writeFile(fileName, data, (err) => {
+        if(err) {
+            console.error(err);
+            return;
+        }
+        console.log('Data has sucsessfully been written into your .MD file!');
+    })
+}
 
 // TODO: Create a function to initialize app
-function init() {}
+function init() {
+    inquirer.prompt(questions).then((answers) => {
+        const fileName = 'README.md'
+        const data = `# ${answers.title}\n${answers.description}
+        \n\n## Description
+        \n- Installation
+        \n- Usage Information
+        \n- Contribution Guidelines
+        \n- Testing Instructions
+        \n\n## Installation\n${answers.install}
+        \n\n## Usage Information\n${answers.usageInfo}
+        \n\n## Contribution Guidlines\n${answers.contribution}
+        \n\nTesting Instructions\n${answers.testInstructions}`
+        writeToFile(fileName, data)
+    });
+};
 
 // Function call to initialize app
 init();
