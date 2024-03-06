@@ -1,69 +1,94 @@
-//Packages used for this application
-const inquirer = require('inquirer');
-const fs = require('fs');
-//Supposed to link to the generateMarkdown.js to complete the process
-const generate = require("./utils/generateMarkdown");
 
-// Array of questions to ask
+// all needed packages
+const inquirer = require("inquirer");
+const fs = require("fs");
+const generateMarkdown = require('./utils/generateMarkdown');
+// All the questions asked when running the application, using inquirer
 const questions = [
+    {
+        type: 'input',
+        message: 'What is your GitHub username?',
+        name: 'gitUsername',
+    },
 
     {
-        type: "input",
-        name: "title",
-        message: "Please enter your README Title: ",
-    
+        type: 'input',
+        message: 'What is your email adress?',
+        name: 'emailadress',
     },
+
     {
-        type: "input",
-        name: "description",
-        message: "Enter a brief description of your application:",
+        type: 'input',
+        message: 'What is your project name?',
+        name: 'projectname',
     },
+
     {
-        type: "input",
-        name: "installinfo",
-        message: "Please enter information on how to install your Application:",
+        type: 'input',
+        message: 'Please write a short description of your project.',
+        name: 'description',
     },
+
     {
-        type: "input",
-        name: "usage",
-        message: "Enter information on how to use your Application:",
+        type: 'input',
+        message: 'Enter install information',
+        name: 'installinfo',
     },
+
     {
-        type: "input",
-        name: "contribution",
-        message: "Enter Contribution Guidlines:",
+        type: 'input',
+        message: 'Enter Usage Information',
+        name: 'usageinfo',
     },
+
     {
-        type: "input",
-        name: "testing",
-        message: "Enter testing instructions",
+        type: 'input',
+        message: 'Enter Contribution Guidlines',
+        name: 'contribution',
     },
+
     {
-        type: "checkbox",
-        name: "license",
-        message: "Choose your License:",
+        type: 'input',
+        message: 'Enter testing instructions',
+        name: 'testing',
+    },
+
+    {
+        type: 'checkbox',
+        message: 'Please select a licence.',
         choices: [
-            "MIT",
-            "GPL 3.0",
-            "BSD 3",
-            "None",
+            'MIT',
+            'APACHE 2.0',
+            'GPL 3.0',
+            'BSD 3',
+            'none',
         ],
-    },
+        name: 'licenses',
+
+    }
 ];
 
-
-
-//Begins the questions about your markdown page
-function init() {
-    inquirer.prompt(questions).then((answers) => {
-        const generateMarkdown = generate(answers);
-     } );
-
+//Writes response data into the markdown file in the Output folder
+function writeToFile(fileName, responses) {
+    fs.writeFile(fileName, responses, (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        console.log('README file created successfully!')
+    })
 }
 
-        
-        
-    
+//Initializes app, triggering the questions and then pulling responses
+function init() {
+    inquirer.prompt(questions).then((responses) => {
+//creating objects for the responses and the file/type/output
+        const markdown = generateMarkdown(responses);
+        const fileName = '../Develop/Output/README.md'
+//triggers the proccess to write the responses into the output
+        writeToFile(fileName, markdown)
+    });
+};
 
-//Runs the program on start
+// Starts everything
 init();
