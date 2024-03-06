@@ -1,5 +1,4 @@
-// TODO: Create a function that returns a license badge based on which license is passed in
-// If there is no license, return an empty string
+//Runs through every possible response on the "licenses" question, and adds the corrersponding badge
 function renderLicenseBadge(licenses) {
   const license = licenses[0]
   if (license === "MIT") {
@@ -15,8 +14,10 @@ function renderLicenseBadge(licenses) {
   }
 }
 
-// TODO: Create a function to generate markdown for README
+//Begins the generation process,
 function generateMarkdown(data) {
+//Returns the name of the project given by the user
+//Returns choses license badge
   return `# ${data.projectname}\n
    ${renderLicenseBadge(data.licenses)}\n
   ${data.description}
@@ -44,5 +45,5 @@ function generateMarkdown(data) {
   ${data.testing}
 `;
 }
-
+//exports the generateMarkdown application to work together with index.js
 module.exports = generateMarkdown;
